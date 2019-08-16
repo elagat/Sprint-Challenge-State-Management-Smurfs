@@ -8,7 +8,9 @@ const SmurfList = () => {
 
 	return (
 		<div>
-      {smurfs.map(smurf => <Smurf name={smurf.name}/>)}
+      {smurfs.map(smurf => <Smurf name={smurf.name}
+                                  height={smurf.height}
+                                  age={smurf.age}/>)}
   	</div>
 	);
 };

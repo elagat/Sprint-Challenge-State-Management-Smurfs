@@ -2,7 +2,7 @@ import React, { useReducer, useEffect, useState } from "react";
 import { SmurfContext } from '../contexts/SmurfContext';
 import SmurfList from './SmurfList';
 import axios from 'axios';
-import Form from "./Form";
+import FormikForm from "./Form";
 import { initialState, reducer } from './reducer';
 
 import "./App.css";
@@ -16,22 +16,11 @@ const App = () => {
     dispatch({type: 'ADD_SMURF', payload: smurf});
   };
 
-
-  useEffect(() => {
-    axios
-      .get('http://localhost:3333/smurfs')
-      .then(response => {
-        setSmurf(response.data)
-      })
-      .catch(error => {
-        console.log(error);
-      })
-  }, []);
-
   return (
     <SmurfContext.Provider value={smurf} >
       <div className="App">
-        <Form addSmurf={addNew}/>
+        <h1>Smurfs</h1>
+        <FormikForm addSmurf={addNew}/>
         <SmurfList />
       </div>
     </SmurfContext.Provider>
