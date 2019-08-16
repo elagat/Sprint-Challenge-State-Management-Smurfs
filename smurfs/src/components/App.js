@@ -1,14 +1,42 @@
 import React, { Component } from "react";
+import { SmurfContext } from '../contexts/SmurfContext';
+import SmurfList from './SmurfList';
+
 import "./App.css";
+
 class App extends Component {
-  render() {
+  constructor() {
+    super();
+    this.state = {
+      smurfs: []
+    };
+  };
+
+  componentDidMount() {
+    this.fetchSmurfs();
+  };
+
+  fetchSmurfs = () => {
+    fetch('http://localhost:3333')
+      .then(response => {
+        return response.json();
+      })
+      .then(smurfs => {
+        console.log('smurfs', smurfs)
+        this.setState({ smurfs: smurfs })
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
+  render(props) {
     return (
-      <div className="App">
-        <h1>SMURFS! 2.0 W/ Redux</h1>
-        <div>Welcome to your state management version of Smurfs!</div>
-        <div>Start inside of your `src/index.js` file!</div>
-        <div>Have fun!</div>
-      </div>
+      <SmurfContext.Provider value={this.props.smurfs}>
+        <div className="App">
+          <SmurfList />
+        </div>
+      </SmurfContext.Provider>
     );
   }
 }
