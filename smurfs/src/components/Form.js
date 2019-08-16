@@ -1,42 +1,37 @@
 import React from 'react';
 
-const Form = () => {
-  const [input, setInput] = useState({
-    name: '',
-    age: null,
-    height: '',
-    id: null
-  });
+class Form extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      smurf: ''
+    };
+  }
 
-  const handleInput = event => {
-    setInput({
-      ...input,
-      name: event.target.value,
-      id: Date.now()
-    });
-  };
+  handleChanges = event => {
+    this.setState({
+      [event.target.name]: event.target.value
+    })
+  }
 
-  const addSmurf = event => {
+  submitSmurf = event => {
     event.preventDefault();
-    props.addSmurf(input);
-    setInput({
-      name: '',
-      age: null,
-      height: '',
-      id: null
-    });
-  };
+    this.props.submitSmurf(this.state.smurf)
+  }
 
-  return (
-      <div>
-        <form onSubmit={addSmurf}>
-          <input
-            value={input.item}
-            onChange={handleInput}
-            type='text'
-          />
-          <button>Add Smurf</button>
-        </form>
-      </div>
+  render() {
+    return (
+      <form onSubmit = { this.submitSmurf }>
+        <input
+          type='text'
+          value={this.state.smurf}
+          name='smurf'
+          onChange={this.handleChanges}
+        />
+        <button>Add</button>
+      </form>
     );
+  }
 }
+
+export default Form;
