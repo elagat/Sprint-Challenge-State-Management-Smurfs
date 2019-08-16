@@ -1,16 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useReducer, useEffect, useState } from "react";
 import { SmurfContext } from '../contexts/SmurfContext';
 import SmurfList from './SmurfList';
 import axios from 'axios';
+import Form from "./Form";
+import { initialState, reducer } from './reducer';
 
 import "./App.css";
 
 const App = () => {
   const [smurf, setSmurf] = useState([]);
 
-  const addSmurf = smurf => {
-  	setSmurf([...smurf, smurf]);
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  const addNew = smurf => {
+    dispatch({type: 'ADD_SMURF', payload: smurf});
   };
+
 
   useEffect(() => {
     axios
@@ -26,6 +31,7 @@ const App = () => {
   return (
     <SmurfContext.Provider value={smurf} >
       <div className="App">
+        <Form addSmurf={addNew}/>
         <SmurfList />
       </div>
     </SmurfContext.Provider>

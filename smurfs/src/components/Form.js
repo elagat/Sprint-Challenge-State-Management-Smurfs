@@ -1,37 +1,47 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
-class Form extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      smurf: ''
-    };
-  }
+const Form = props => {
 
-  handleChanges = event => {
-    this.setState({
-      [event.target.name]: event.target.value
-    })
-  }
+  const [input, setInput] = useState({
+    name: '',
+    age: null,
+    id: null,
+    height: ''
+  });
 
-  submitSmurf = event => {
+  const handleInput = event => {
+    setInput({
+      ...input,
+      name: event.target.value,
+      id: Date.now()
+    });
+  };
+
+  const addSmurf = event => {
     event.preventDefault();
-    this.props.submitSmurf(this.state.smurf)
-  }
+    props.addSmurf(input);
+    setInput({
+      name: '',
+      age: null,
+      id: null,
+      height: ''
+    });
+    axios.post('http://localhost:3333/smurfs', input);
+  };
 
-  render() {
-    return (
-      <form onSubmit = { this.submitSmurf }>
+  return (
+    <div>
+      <form onSubmit={addSmurf}>
         <input
+          value={input.name}
+          onChange={handleInput}
           type='text'
-          value={this.state.smurf}
-          name='smurf'
-          onChange={this.handleChanges}
         />
         <button>Add</button>
       </form>
-    );
-  }
-}
+    </div>
+  );
+};
 
 export default Form;
