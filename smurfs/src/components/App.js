@@ -1,16 +1,30 @@
-import React, { Component } from "react";
+import React, { useReducer, useEffect, useState } from "react";
+import { SmurfContext } from '../contexts/SmurfContext';
+import SmurfList from './SmurfList';
+import axios from 'axios';
+import FormikForm from "./Form";
+import { initialState, reducer } from './reducer';
+
 import "./App.css";
-class App extends Component {
-  render() {
-    return (
+
+const App = () => {
+  const [smurf, setSmurf] = useState([]);
+
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  const addNew = smurf => {
+    dispatch({type: 'ADD_SMURF', payload: smurf});
+  };
+
+  return (
+    <SmurfContext.Provider value={smurf} >
       <div className="App">
-        <h1>SMURFS! 2.0 W/ Redux</h1>
-        <div>Welcome to your state management version of Smurfs!</div>
-        <div>Start inside of your `src/index.js` file!</div>
-        <div>Have fun!</div>
+        <h1>Smurfs</h1>
+        <FormikForm addSmurf={addNew}/>
+        <SmurfList />
       </div>
-    );
-  }
+    </SmurfContext.Provider>
+  );
 }
 
 export default App;
